@@ -10,11 +10,19 @@ module.exports = {
       colors: {
         primary: "#12876c",
         secondary: "#f6fcfe",
-        accent: "#126887",
+        accent: {
+          DEFAULT: "#126887",
+          dark: "#0a3b4b",
+        },
+        background: {
+          DEFAULT: "#181818",
+          dark: "#111111",
+        },
       },
     },
     boxShadow: {
-      DEFAULT: "0 20px 80px -10px #12876c",
+      primary: "0 20px 80px -10px rgba(18, 135, 108, 0.6)",
+      secondary: "0 20px 80px -10px #f6fcfe",
     },
   },
   plugins: [],

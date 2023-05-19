@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function Metronome() {
   return (
     <div
-      className="metronomeContainer relative mt-20 md:mt-40 mx-auto"
+      className="metronomeContainer relative mt-28 sm:mt-40 mx-auto"
       style={{ maxWidth: 500 + "px", maxHeight: 750 + "px" }}
     >
       <Image
