@@ -1,4 +1,7 @@
+"use client";
 import Link from "next/link";
+
+import { signIn, signOut, useSession } from "next-auth/react";
 
 export default function PrimaryButton({
 	label,
@@ -9,6 +12,17 @@ export default function PrimaryButton({
 	link: string;
 	className?: string;
 }) {
+	const { data: session } = useSession();
+	let onClick = () => {};
+	if (label === "Login") {
+		if (session) {
+			label = "Logout";
+			onClick = () => signOut();
+		} else {
+			onClick = () => signIn();
+		}
+	}
+
 	return (
 		<Link
 			className={
@@ -16,6 +30,7 @@ export default function PrimaryButton({
 				className
 			}
 			href={link}
+			onClick={onClick}
 		>
 			{label}
 		</Link>

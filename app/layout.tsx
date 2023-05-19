@@ -2,6 +2,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 
 import Header from "@/components/header";
+import AuthContext from "@/app/AuthContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,8 +19,10 @@ export default function RootLayout({
   return (
     <html className="bg-background-dark" lang="en">
       <body className={inter.className}>
-        <Header />
-        {children}
+        <AuthContext>
+          <Header />
+          {children}
+        </AuthContext>
       </body>
     </html>
   );
