@@ -12,10 +12,10 @@ export default function Header() {
 					<PrimaryButton label="Login" link="" />
 					<Image
 						className="rounded-full border-2 border-accent-dark justify-self-end hidden sm:inline"
-						src="/profile.png"
+						src="/logo.png"
 						alt="profile pic"
-						width={100}
-						height={100}
+						width={65}
+						height={65}
 					/>
 				</ul>
 				<ul className="flex w-1/2 justify-end gap-2 items-center h-full p-3">
