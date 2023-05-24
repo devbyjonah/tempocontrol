@@ -1,5 +1,5 @@
 export default class MetronomeEngine {
-	// private only to be used within class
+	// private only to be used within class (doesn't need _ prefix)
 	private audioContext: AudioContext | null;
 	private setIntervalId: number | NodeJS.Timer | null;
 	private animationCallback: (beat: number, secondsPerBeat: number) => void;
@@ -8,13 +8,13 @@ export default class MetronomeEngine {
 	private scheduleAheadTime: number;
 	private nextNoteTime: number;
 	private previousTap: number;
-	// private attributes with additional validations in setter methods
+	// private attributes with additional getter/setter methods
+	// _ prefix to avoid naming conflicts with methods
 	private _beatsPerMeasure: number;
 	private _tempo: number;
 	private _volume: number;
 	private _pitch: number;
 	private _subdivision: number;
-	// private with only getter methods
 	private _currentBeat: number;
 	private _playing: boolean;
 
@@ -103,7 +103,7 @@ export default class MetronomeEngine {
 		is 50% greater or less than the average. this allows the user to change tempo quickly
 		without having to wait for the array to fill up again
 	*/
-	_updateTapDifferenceArray(diff: number) {
+	private updateTapDifferenceArray(diff: number) {
 		const average =
 			this.tapDifferenceArray.reduce((a, b) => a + b, 0) /
 			this.tapDifferenceArray.length;
@@ -121,14 +121,14 @@ export default class MetronomeEngine {
 		- uses audio context to find time passed between taps
 		- stores time difference(diff) between taps in tapDifferenceArray
 	*/
-	tapTempo() {
+	public tapTempo() {
 		// if no audio context, create one
 		if (this.audioContext === null) {
 			this.audioContext = new window.AudioContext();
 		}
 		if (this.previousTap) {
 			const diff = this.audioContext.currentTime - this.previousTap;
-			const average = this._updateTapDifferenceArray(diff);
+			const average = this.updateTapDifferenceArray(diff);
 			this.tempo = Math.floor(60 / average);
 		}
 		this.previousTap = this.audioContext.currentTime;
@@ -156,8 +156,8 @@ export default class MetronomeEngine {
 		this._playing = false;
 		clearInterval(this.setIntervalId!!);
 	}
-	// surface level methods for use in the metronome react component
-	startStop() {
+	// surface level method for use in the metronome react component
+	public startStop() {
 		if (this._playing) {
 			this._stop();
 		} else {
