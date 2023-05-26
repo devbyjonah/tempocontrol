@@ -14,10 +14,7 @@ export default function Metronome() {
           ? "-30deg"
           : "30deg";
 
-      beater.style.transitionProperty = "transform";
-      beater.style.transitionDuration = `${secondsPerBeat}s`;
-      beater.style.transitionTimingFunction = "linear";
-
+      beater.style.transition = `transform ${secondsPerBeat}s linear`;
       beater.style.transform = `translate(-50%) rotate(${rotateValue})`;
     }
   };
