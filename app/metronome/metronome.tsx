@@ -5,9 +5,23 @@ import MetronomeEngine from "./metronomeEngine";
 import { useRef } from "react";
 
 export default function Metronome() {
+  // animation callback is passed to the metronome engine and invoked on each beat
   const animationCallback = (beat: number, secondsPerBeat: number) => {
-    console.log(beat, secondsPerBeat);
+    const beater: HTMLImageElement | null = document.querySelector("#beater");
+    if (beater) {
+      const rotateValue =
+        beater.style.transform === "translate(-50%) rotate(30deg)"
+          ? "-30deg"
+          : "30deg";
+
+      beater.style.transitionProperty = "transform";
+      beater.style.transitionDuration = `${secondsPerBeat}s`;
+      beater.style.transitionTimingFunction = "linear";
+
+      beater.style.transform = `translate(-50%) rotate(${rotateValue})`;
+    }
   };
+  // store instance of MetronomeEngine in a ref so that it persists between renders
   const metronomeEngine = useRef(new MetronomeEngine(animationCallback));
   metronomeEngine.current.startStop();
   return (
@@ -17,7 +31,6 @@ export default function Metronome() {
     >
       <Image
         id="base"
-        className=""
         src="/metronomeBase.png"
         alt="metronome"
         width={500}
@@ -25,7 +38,7 @@ export default function Metronome() {
       />
       <Image
         id="beater"
-        className="absolute h-full -top-2 left-1/2 transform -translate-x-1/2"
+        className="absolute h-full -top-2 left-1/2 origin-bottom"
         src="/beater.png"
         alt="metronome"
         width={50}
