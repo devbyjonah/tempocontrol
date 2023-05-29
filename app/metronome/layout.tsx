@@ -1,14 +1,14 @@
-"use client";
-import { useSession } from "next-auth/react";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
 // checks authorized users
-export default function Layout({
+export default async function Layout({
   children, // will be a page or nested layout
 }: {
   children: React.ReactNode;
 }) {
-  const session = useSession();
-  if (session.status === "unauthenticated" || session.status === "loading") {
+  const session = await getServerSession(authOptions);
+  if (!session) {
     return (
       <div className="flex justify-center items-center px-20 text-center py-40 w-full h-full text-3xl text-white">
         <h1>
