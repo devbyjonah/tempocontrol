@@ -31,6 +31,8 @@ export default function Metronome() {
   const startStop = () => {
     metronomeEngine.current.startStop();
     setPlaying(metronomeEngine.current.playing);
+    const beater: HTMLImageElement | null = document.querySelector("#beater");
+    beater!!.style.transform = "translate(-50%) rotate(0deg)";
   };
 
   return (
