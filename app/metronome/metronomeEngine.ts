@@ -134,7 +134,7 @@ export default class MetronomeEngine {
 		this.previousTap = this.audioContext.currentTime;
 	}
 
-	_start() {
+	private start() {
 		if (this._playing) return;
 
 		if (this.audioContext === null) {
@@ -152,16 +152,25 @@ export default class MetronomeEngine {
 		);
 	}
 
-	_stop() {
+	private stop() {
 		this._playing = false;
 		clearInterval(this.setIntervalId!!);
 	}
 	// surface level method for use in the metronome react component
 	public startStop() {
-		if (this._playing) {
-			this._stop();
+		if (this.playing) {
+			this.stop();
 		} else {
-			this._start();
+			this.start();
+		}
+	}
+
+	public cleanup() {
+		this.audioContext?.close();
+		this.audioContext = null;
+		if (this.setIntervalId) {
+			clearInterval(this.setIntervalId);
+			this.setIntervalId = null;
 		}
 	}
 
