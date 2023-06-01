@@ -4,7 +4,7 @@ import MetronomeEngine from "./metronomeEngine";
 import PrimaryButton from "@/components/primaryButton";
 import SecondaryButton from "@/components/secondaryButton";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 export default function Metronome() {
   // animation callback is passed to the metronome engine and invoked on each beat
@@ -34,6 +34,14 @@ export default function Metronome() {
     const beater: HTMLImageElement | null = document.querySelector("#beater");
     beater!!.style.transform = "translate(-50%) rotate(0deg)";
   };
+
+  useEffect(() => {
+    // Cleanup function to stop the metronome and remove the audio context
+    return () => {
+      metronomeEngine.current.startStop();
+      metronomeEngine.current.cleanup();
+    };
+  }, []);
 
   return (
     <div className="flex flex-col-reverse sm:flex-row">
