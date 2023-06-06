@@ -27,14 +27,13 @@ export default function Metronome() {
   // state for metronome values that are set by user
   const [tempo, setTempo] = useState(metronomeEngine.current.tempo);
   const [playing, setPlaying] = useState(metronomeEngine.current.playing);
+  const [subdivision, setSubdivision] = useState(
+    metronomeEngine.current.subdivision
+  );
 
-  // setup for various settings modals
+  // state for managing settings modals
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(<>Default Modal</>);
-  const openSubdivideModal = () => {
-    setModalContent(<SubdivisionModal setSubdivision={() => {}} />);
-    setModalOpen(true);
-  };
 
   // event handlers
   const startStop = () => {
@@ -42,6 +41,22 @@ export default function Metronome() {
     setPlaying(metronomeEngine.current.playing);
     const beater: HTMLImageElement | null = document.querySelector("#beater");
     beater!!.style.transform = "translate(-50%) rotate(0deg)";
+  };
+  const changeSubdivision = (value: number): number => {
+    metronomeEngine.current.subdivision = value;
+    setSubdivision(metronomeEngine.current.subdivision);
+    return metronomeEngine.current.subdivision;
+  };
+
+  // event handlers to open and set modal content
+  const openSubdivideModal = () => {
+    setModalContent(
+      <SubdivisionModal
+        initialValue={subdivision}
+        changeSubdivision={changeSubdivision}
+      />
+    );
+    setModalOpen(true);
   };
 
   useEffect(() => {
@@ -81,7 +96,7 @@ export default function Metronome() {
         />
       </div>
       <div className="sm:w-2/5 text-black flex flex-col">
-        <div className="my-auto">
+        <div className="my-auto flex gap-2">
           <Button
             label={playing ? "Stop" : "Start"}
             onClick={startStop}

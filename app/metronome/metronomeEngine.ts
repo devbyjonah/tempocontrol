@@ -176,10 +176,21 @@ export default class MetronomeEngine {
 
 	// setter and getter methods for private class attributes
 	set beatsPerMeasure(value: number) {
-		if (value < 1) {
-			throw new Error("beatsPerMeasure must be greater than 0");
-		}
 		this._beatsPerMeasure = value;
+	}
+
+	get beatsPerMeasure() {
+		return this._beatsPerMeasure;
+	}
+
+	set subdivision(value: number) {
+		if (value > 0 && value < 5) {
+			this._subdivision = value;
+		}
+	}
+
+	get subdivision() {
+		return this._subdivision;
 	}
 
 	set tempo(value: number) {
