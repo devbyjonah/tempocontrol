@@ -1,8 +1,9 @@
 "use client";
 import Image from "next/image";
 import MetronomeEngine from "./metronomeEngine";
-import PrimaryButton from "@/components/primaryButton";
-import SecondaryButton from "@/components/secondaryButton";
+import Button from "@/components/button";
+import SettingsModal from "./settingsModal";
+import { SubdivisionModal } from "./modalContent";
 
 import { useRef, useState, useEffect } from "react";
 
@@ -27,6 +28,14 @@ export default function Metronome() {
   const [tempo, setTempo] = useState(metronomeEngine.current.tempo);
   const [playing, setPlaying] = useState(metronomeEngine.current.playing);
 
+  // setup for various settings modals
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState(<>Default Modal</>);
+  const openSubdivideModal = () => {
+    setModalContent(<SubdivisionModal setSubdivision={() => {}} />);
+    setModalOpen(true);
+  };
+
   // event handlers
   const startStop = () => {
     metronomeEngine.current.startStop();
@@ -45,6 +54,11 @@ export default function Metronome() {
 
   return (
     <div className="flex flex-col-reverse sm:flex-row">
+      <SettingsModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        content={modalContent}
+      />
       <div
         className="relative mt-28 sm:mt-40 mx-auto"
         style={{ maxWidth: 500 + "px", maxHeight: 750 + "px" }}
@@ -67,14 +81,18 @@ export default function Metronome() {
         />
       </div>
       <div className="sm:w-2/5 text-black flex flex-col">
-        <div className="h-1/3"></div>
-        <div className="h-1/3">
-          <PrimaryButton
+        <div className="my-auto">
+          <Button
             label={playing ? "Stop" : "Start"}
             onClick={startStop}
+            className="bg-primary"
+          />
+          <Button
+            className="bg-primary"
+            label="Subdivide"
+            onClick={openSubdivideModal}
           />
         </div>
-        <div className="h-1/3"></div>
       </div>
     </div>
   );
