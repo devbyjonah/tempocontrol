@@ -2,8 +2,6 @@
 
 An online metronome application that allows users to sign in, create presets, and practice with the accuracy and precision required by professional musicians.
 
-![alt tag](http://placecorgi.com/1200/650)
-
 ## How It's Made:
 
 **Tech used:** NextJS, ReactJS, Typescript, Web Audio API, Next Auth, and TailwindCSS
@@ -16,4 +14,9 @@ I have many features and optimizations planned for this app so be sure to keep a
 
 ## Lessons Learned:
 
-I have learned so much already while working on this project, and I expect that it will continue to help me grow as a developer. Some of my biggest takeaways: - NextJS is an extremely powerful framework that allows you to build powerful applications quickly and efficiently - Typescript is a great tool to ensure type safety and increase the readability of your code - TailwindCSS and it's utility first approach allows me to quickly style components and increase productivity greatly - The web audio API is a powerful tool that allows you to create complex audio applications with ease. In addition passing off complex and precise operations to external workers can be helpful when creating large web applications to avoid potential blocking issues. - Finally Next Auth is a huge time saver, handling all aspects of authentication and session management for your application. It also allows you to easily add various authentication providers such as google 0Auth and other external providers.
+I have learned so much already while working on this project, and I expect that it will continue to help me grow as a developer. Some of my biggest takeaways: 
+    - NextJS is an extremely powerful framework that allows you to build powerful applications quickly and efficiently 
+    - Typescript is a great tool to ensure type safety and increase the readability of your code 
+    - TailwindCSS and it's utility first approach allows me to quickly style components and increase productivity greatly 
+    - The web audio API is a powerful tool that allows you to create complex audio applications with ease. In addition passing off complex and precise       operations to external workers can be helpful when creating large web applications to avoid potential blocking issues. 
+    - Finally Next Auth is a huge time saver, handling all aspects of authentication and session management for your application. It also allows you         to easily add various authentication providers such as google 0Auth and other external providers.
