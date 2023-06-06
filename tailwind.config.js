@@ -17,6 +17,7 @@ module.exports = {
         background: {
           DEFAULT: "#181818",
           dark: "#111111",
+          transparent: "rgba(0, 0, 0, 0.75)",
         },
       },
     },
