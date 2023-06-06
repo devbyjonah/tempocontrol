@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 
-import SecondaryButton from "./secondaryButton";
+import Button from "./button";
 
 export default function DropdownToggle() {
 	const [expanded, setExpanded] = useState(false);
@@ -50,13 +50,13 @@ export default function DropdownToggle() {
 			{expanded && (
 				<div className="sm:hidden absolute top-20 right-0 w-1/2 h-40 bg-background opacity-90 rounded">
 					<ul className="flex flex-col justify-center items-center h-full gap-2 p-3">
-						<SecondaryButton
-							className="w-full opacity-100"
+						<Button
+							className="bg-white w-full opacity-100"
 							label="Home"
 							link="/"
 						/>
-						<SecondaryButton
-							className="w-full"
+						<Button
+							className="bg-white w-full"
 							label="Metronome"
 							link="/metronome"
 						/>

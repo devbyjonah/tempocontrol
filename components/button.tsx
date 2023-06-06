@@ -2,7 +2,7 @@
 import { signIn, signOut } from "next-auth/react";
 import Link from "next/link";
 
-export default function PrimaryButton({
+export default function Button({
 	label,
 	link,
 	className,
@@ -17,7 +17,7 @@ export default function PrimaryButton({
 		return (
 			<Link
 				className={
-					"bg-primary py-3 px-5 rounded text-xl font-bold hover:-translate-y-1 hover:shadow-secondary " +
+					"py-3 px-5 rounded text-lg font-bold hover:-translate-y-1 hover:shadow-secondary " +
 					className
 				}
 				href={link}
@@ -32,7 +32,7 @@ export default function PrimaryButton({
 		return (
 			<button
 				className={
-					"bg-primary py-3 px-5 rounded text-xl font-bold hover:-translate-y-1 hover:shadow-secondary " +
+					"py-3 px-5 rounded text-lg font-bold hover:-translate-y-1 hover:shadow-secondary " +
 					className
 				}
 				onClick={onClick}
