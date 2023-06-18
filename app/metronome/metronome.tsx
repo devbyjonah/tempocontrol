@@ -42,13 +42,12 @@ export default function Metronome() {
     const beater: HTMLImageElement | null = document.querySelector("#beater");
     beater!!.style.transform = "translate(-50%) rotate(0deg)";
   };
+  // event handlers to open and set modal content
   const changeSubdivision = (value: number): number => {
     metronomeEngine.current.subdivision = value;
     setSubdivision(metronomeEngine.current.subdivision);
     return metronomeEngine.current.subdivision;
   };
-
-  // event handlers to open and set modal content
   const openSubdivideModal = () => {
     setModalContent(
       <SubdivisionModal
@@ -62,7 +61,6 @@ export default function Metronome() {
   useEffect(() => {
     // Cleanup function to stop the metronome and remove the audio context
     return () => {
-      metronomeEngine.current.startStop();
       metronomeEngine.current.cleanup();
     };
   }, []);
