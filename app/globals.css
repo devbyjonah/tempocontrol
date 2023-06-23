@@ -15,3 +15,11 @@
 	filter: saturate(0.3);
 	opacity: 20%;
 }
+
+.settings-container {
+	background: rgba(107, 106, 106, 0.2);
+	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+	backdrop-filter: blur(10.1px);
+	-webkit-backdrop-filter: blur(4.1px);
+	border: 1px solid rgba(107, 106, 106, 0.3);
+}

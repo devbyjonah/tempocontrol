@@ -2,8 +2,9 @@
 import Image from "next/image";
 import MetronomeEngine from "./metronomeEngine";
 import Button from "@/components/button";
+import Slider from "@/components/slider";
 import SettingsModal from "./settingsModal";
-import { SubdivisionModal } from "./modalContent";
+import { SubdivisionModal, TimeSignatureModal } from "./modalContent";
 
 import { useRef, useState, useEffect } from "react";
 
@@ -30,29 +31,46 @@ export default function Metronome() {
   const [subdivision, setSubdivision] = useState(
     metronomeEngine.current.subdivision
   );
+  const [beatsPerMeasure, setBeatsPerMeasure] = useState(
+    metronomeEngine.current.beatsPerMeasure
+  );
 
   // state for managing settings modals
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(<>Default Modal</>);
 
-  // event handlers
+  // event handlers for metronome
   const startStop = () => {
     metronomeEngine.current.startStop();
     setPlaying(metronomeEngine.current.playing);
     const beater: HTMLImageElement | null = document.querySelector("#beater");
     beater!!.style.transform = "translate(-50%) rotate(0deg)";
   };
-  // event handlers to open and set modal content
   const changeSubdivision = (value: number): number => {
     metronomeEngine.current.subdivision = value;
     setSubdivision(metronomeEngine.current.subdivision);
     return metronomeEngine.current.subdivision;
   };
-  const openSubdivideModal = () => {
+  const changeTimeSignature = (value: number): number => {
+    metronomeEngine.current.beatsPerMeasure = value;
+    setBeatsPerMeasure(metronomeEngine.current.beatsPerMeasure);
+    return metronomeEngine.current.beatsPerMeasure;
+  };
+  // event handlers to open and set modal content
+  const openSubdivideModal = (): void => {
     setModalContent(
       <SubdivisionModal
         initialValue={subdivision}
         changeSubdivision={changeSubdivision}
+      />
+    );
+    setModalOpen(true);
+  };
+  const openTimeSignatureModal = (): void => {
+    setModalContent(
+      <TimeSignatureModal
+        initialValue={beatsPerMeasure}
+        changeTimeSignature={changeTimeSignature}
       />
     );
     setModalOpen(true);
@@ -93,8 +111,8 @@ export default function Metronome() {
           height={750}
         />
       </div>
-      <div className="sm:w-2/5 text-black flex flex-col">
-        <div className="my-auto flex gap-2">
+      <div className="sm:w-2/5 text-black flex flex-col items-center sm:items-stretch">
+        <div className="max-w-xs rounded settings-container my-auto flex flex-col gap-2">
           <Button
             label={playing ? "Stop" : "Start"}
             onClick={startStop}
@@ -105,7 +123,13 @@ export default function Metronome() {
             label="Subdivide"
             onClick={openSubdivideModal}
           />
+          <Button
+            className="bg-primary"
+            label="Time Signature"
+            onClick={openTimeSignatureModal}
+          />
         </div>
+        <Slider />
       </div>
     </div>
   );

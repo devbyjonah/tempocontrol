@@ -176,7 +176,9 @@ export default class MetronomeEngine {
 
 	// setter and getter methods for private class attributes
 	set beatsPerMeasure(value: number) {
-		this._beatsPerMeasure = value;
+		if (value > 0 && value < 13) {
+			this._beatsPerMeasure = value;
+		}
 	}
 
 	get beatsPerMeasure() {
