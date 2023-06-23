@@ -20,7 +20,7 @@ export default function SettingsModal({
 			onClick={onLoseFocus}
 			className="flex justify-center items-center fixed z-10 top-0 left-0 w-full h-full bg-background-transparent"
 		>
-			<div className="relative w-4/5 max-w-md max-h-96 text-background bg-primary w-full h-full rounded">
+			<div className="relative max-w-md max-h-96 text-background bg-primary w-full h-full rounded">
 				<AiFillCloseCircle
 					onClick={onClose}
 					className="absolute text-5xl hover:text-red-500"

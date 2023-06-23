@@ -3,6 +3,22 @@ import { BsArrowLeftCircleFill, BsArrowRightCircleFill } from "react-icons/bs";
 
 import { useState } from "react";
 
+const OButton = ({
+	label,
+	onClick,
+}: {
+	label: string;
+	onClick: () => void;
+}) => {
+	return (
+		<Button
+			onClick={onClick}
+			label={label}
+			className="bg-primary rounded-full"
+		/>
+	);
+};
+
 export const SubdivisionModal = ({
 	changeSubdivision,
 	initialValue,
@@ -41,26 +57,10 @@ export const SubdivisionModal = ({
 				/>
 			</div>
 			<div className="flex justify-around">
-				<Button
-					label="1"
-					onClick={() => onClick(1)}
-					className="bg-primary rounded-full"
-				/>
-				<Button
-					onClick={() => onClick(2)}
-					label="2"
-					className="bg-primary rounded-full"
-				/>
-				<Button
-					onClick={() => onClick(3)}
-					label="3"
-					className="bg-primary rounded-full"
-				/>
-				<Button
-					onClick={() => onClick(4)}
-					label="4"
-					className="bg-primary rounded-full"
-				/>
+				<OButton onClick={() => onClick(1)} label="1" />
+				<OButton onClick={() => onClick(2)} label="2" />
+				<OButton onClick={() => onClick(3)} label="3" />
+				<OButton onClick={() => onClick(4)} label="4" />
 			</div>
 		</div>
 	);
@@ -104,38 +104,14 @@ export const TimeSignatureModal = ({
 				/>
 			</div>
 			<div className="flex justify-around">
-				<Button
-					label="1"
-					onClick={() => onClick(1)}
-					className="bg-primary rounded-full"
-				/>
-				<Button
-					onClick={() => onClick(2)}
-					label="2"
-					className="bg-primary rounded-full"
-				/>
-				<Button
-					onClick={() => onClick(3)}
-					label="3"
-					className="bg-primary rounded-full"
-				/>
-				<Button
-					onClick={() => onClick(4)}
-					label="4"
-					className="bg-primary rounded-full"
-				/>
+				<OButton label="1" onClick={() => onClick(1)} />
+				<OButton onClick={() => onClick(2)} label="2" />
+				<OButton onClick={() => onClick(3)} label="3" />
+				<OButton onClick={() => onClick(4)} label="4" />
 			</div>
 			<div className="flex justify-center gap-8">
-				<Button
-					onClick={() => onClick(5)}
-					label="5"
-					className="bg-primary rounded-full"
-				/>
-				<Button
-					onClick={() => onClick(6)}
-					label="6"
-					className="bg-primary rounded-full"
-				/>
+				<OButton onClick={() => onClick(5)} label="5" />
+				<OButton onClick={() => onClick(6)} label="6" />
 			</div>
 		</div>
 	);
