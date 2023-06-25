@@ -37,6 +37,10 @@ export default class MetronomeEngine {
 		this.tapDifferenceArray = [];
 		this.previousTap = 0;
 	}
+	/*
+	The scheduler, scheduleNote, and nextBeat methods are based on Chris Wilson's metronome implementation.
+	You can find his article on Web Audio Scheduling here: https://www.html5rocks.com/en/tutorials/audio/scheduling/
+	*/
 
 	private scheduler() {
 		// continue scheduling notes as long as we are within the schedule ahead range
