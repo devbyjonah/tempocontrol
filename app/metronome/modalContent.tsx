@@ -2,22 +2,36 @@ import Button from "../../components/button";
 import { BsArrowLeftCircleFill, BsArrowRightCircleFill } from "react-icons/bs";
 
 import { useState } from "react";
-
+// prettier-ignore
+interface IContent {
+	[key: string]: {
+		description: string;
+		hint: string;
+		numberOptions: number[];
+	};
+}
+const content: IContent = {
+	Subdivide: {
+		description: "Select the number of subdivisions per beat.",
+		hint: "Combine with time signature for complex divisions.",
+		numberOptions: [1, 2, 3, 4],
+	},
+	"Time Signature": {
+		description: "Select the number of beats per measure.",
+		hint: "Use the arrows to select a number not listed below.",
+		numberOptions: [1, 2, 3, 4, 5, 6],
+	},
+};
 const ModalContent = ({
 	title,
-	description,
-	hint,
 	changeValue,
 	initialValue,
-	numberOptions,
 }: {
 	title: string;
-	description: string;
-	hint: string;
 	changeValue: (value: number) => number;
 	initialValue: number;
-	numberOptions: number[];
 }) => {
+	const { description, hint, numberOptions } = content[title];
 	const [value, setValue] = useState(initialValue);
 	const updateValue = (value: number) => {
 		const newValue = changeValue(value);

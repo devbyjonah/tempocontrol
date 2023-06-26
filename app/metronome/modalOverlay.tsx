@@ -1,6 +1,6 @@
 import { AiFillCloseCircle } from "react-icons/ai";
 
-export default function SettingsModal({
+export default function ModalOverlay({
 	isOpen,
 	onClose,
 	content,
