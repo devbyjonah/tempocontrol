@@ -7,6 +7,7 @@ import ModalOverlay from "./modalOverlay";
 import ModalContent from "./modalContent";
 
 import { useRef, useState, useEffect } from "react";
+import TempoSlider from "./tempoSlider";
 
 export default function Metronome() {
 	// animation callback is passed to the metronome engine and invoked on each beat
@@ -48,6 +49,11 @@ export default function Metronome() {
 			document.querySelector("#beater");
 		beater!!.style.transform = "translate(-50%) rotate(0deg)";
 	};
+	const changeTempo = (value: number): number => {
+		metronomeEngine.current.tempo = value;
+		setTempo(metronomeEngine.current.tempo);
+		return metronomeEngine.current.tempo;
+	};
 	const changeSubdivision = (value: number): number => {
 		metronomeEngine.current.subdivision = value;
 		setSubdivision(metronomeEngine.current.subdivision);
@@ -74,6 +80,31 @@ export default function Metronome() {
 		setModalOpen(true);
 	};
 
+	let currentY = 0,
+		previousY = 0;
+	const startDrag = (e: React.MouseEvent) => {
+		previousY = e.clientY;
+		const handleMouseUp = () => {
+			document.removeEventListener("mousemove", handleMouseMove);
+			window.removeEventListener("mouseup", handleMouseUp);
+		};
+
+		document.addEventListener("mousemove", handleMouseMove);
+		window.addEventListener("mouseup", handleMouseUp);
+	};
+	const handleMouseMove = (event: MouseEvent) => {
+		currentY = event.clientY;
+		let diff = currentY - previousY;
+		const sliderContainer = document.querySelector("#sliderContainer");
+		if (!sliderContainer) {
+			console.log("sliderContainer not found");
+			return;
+		}
+		const sliderHeight = sliderContainer.getBoundingClientRect().height;
+		const percentage = diff / (sliderHeight + 50);
+		const newTempo = tempo - Math.round(percentage * 180);
+		changeTempo(newTempo);
+	};
 	useEffect(() => {
 		// Cleanup function to stop the metronome and remove the audio context
 		return () => {
@@ -89,16 +120,25 @@ export default function Metronome() {
 				content={modalContent}
 			/>
 			<div
-				className="relative mt-28 sm:mt-40 mx-auto"
+				id="metronomeContainer"
+				className="relative mt-28 sm:mt-40 mx-auto select-none"
 				style={{ maxWidth: 500 + "px", maxHeight: 750 + "px" }}
 			>
 				<Image
-					id="base"
+					id="metronomeBase"
 					src="/metronomeBase.png"
 					alt="metronome"
 					width={500}
 					height={750}
 					priority
+				/>
+				<Image
+					id="sliderRail"
+					className="saturate-0 opacity-25 absolute h-full -top-2 left-1/2 -translate-x-1/2"
+					src="/beater.png"
+					alt="metronome"
+					width={50}
+					height={750}
 				/>
 				<Image
 					id="beater"
@@ -108,6 +148,20 @@ export default function Metronome() {
 					width={50}
 					height={750}
 				/>
+				<div
+					id="sliderContainer"
+					style={{ height: "87%" }}
+					className="text-white text-2xl w-16 text-center absolute top-14 left-1/2 -translate-x-1/2"
+				>
+					<div
+						id="slider"
+						onMouseDown={startDrag}
+						style={{ bottom: ((tempo - 40) / 180) * 100 + "%" }}
+						className="bg-accent sm:hover:scale-125 font-bold rounded border-4 border-primary absolute left-0 right-0"
+					>
+						{tempo}
+					</div>
+				</div>
 			</div>
 			<div className="sm:w-2/5 text-black flex flex-col items-center sm:items-stretch">
 				<div className="max-w-xs rounded settings-container my-auto flex flex-col gap-2">

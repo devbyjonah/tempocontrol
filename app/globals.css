@@ -23,3 +23,26 @@
 	-webkit-backdrop-filter: blur(4.1px);
 	border: 1px solid rgba(107, 106, 106, 0.3);
 }
+
+/* add small up/down arrows above/below slider using before/after pseudo selector */
+#slider:before {
+	content: "";
+	position: absolute;
+	top: -10px;
+	left: 50%;
+	margin-left: -10px;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-bottom: 10px solid black;
+}
+
+#slider:after {
+	content: "";
+	position: absolute;
+	bottom: -10px;
+	left: 50%;
+	margin-left: -10px;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-top: 10px solid black;
+}
