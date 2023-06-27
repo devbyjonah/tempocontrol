@@ -1,8 +1,7 @@
 export default class MetronomeEngine {
 	// private only to be used within class (doesn't need _ prefix)
-	private audioContext: AudioContext | null;
-	private setIntervalId: number | NodeJS.Timer | null;
-	private animationCallback: (beat: number, secondsPerBeat: number) => void;
+	private audioContext?: AudioContext;
+	private setIntervalId?: number | NodeJS.Timer;
 	private tapDifferenceArray: number[];
 	private lookahead: number;
 	private scheduleAheadTime: number;
@@ -17,11 +16,9 @@ export default class MetronomeEngine {
 	private _subdivision: number;
 	private _currentBeat: number;
 	private _playing: boolean;
+	private _animationCallback?: (beat: number, secondsPerBeat: number) => void;
 
-	constructor(
-		animationCallback: (beat: number, secondsPerBeat: number) => void
-	) {
-		this.audioContext = null;
+	constructor() {
 		this._currentBeat = 0;
 		this._beatsPerMeasure = 4;
 		this._tempo = 120;
@@ -29,11 +26,9 @@ export default class MetronomeEngine {
 		this.scheduleAheadTime = 0.1; // how far ahead to schedule audio (sec)
 		this.nextNoteTime = 0.0; // time next note should play
 		this._playing = false;
-		this.setIntervalId = null;
 		this._volume = 1.0;
 		this._pitch = 1000;
 		this._subdivision = 1;
-		this.animationCallback = animationCallback;
 		this.tapDifferenceArray = [];
 		this.previousTap = 0;
 	}
@@ -86,8 +81,8 @@ export default class MetronomeEngine {
 		osc.start(time);
 		osc.stop(time + 0.03);
 
-		if (onBeat) {
-			this.animationCallback(beatNumber, 60.0 / this._tempo);
+		if (onBeat && this._animationCallback) {
+			this._animationCallback(beatNumber, 60.0 / this._tempo);
 		}
 	}
 
@@ -127,7 +122,7 @@ export default class MetronomeEngine {
 	*/
 	public tapTempo() {
 		// if no audio context, create one
-		if (this.audioContext === null) {
+		if (this.audioContext === undefined) {
 			this.audioContext = new window.AudioContext();
 		}
 		if (this.previousTap) {
@@ -141,7 +136,7 @@ export default class MetronomeEngine {
 	private start() {
 		if (this._playing) return;
 
-		if (this.audioContext === null) {
+		if (this.audioContext === undefined) {
 			this.audioContext = new window.AudioContext();
 		}
 
@@ -171,10 +166,10 @@ export default class MetronomeEngine {
 
 	public cleanup() {
 		this.audioContext?.close();
-		this.audioContext = null;
+		this.audioContext = undefined;
 		if (this.setIntervalId) {
 			clearInterval(this.setIntervalId);
-			this.setIntervalId = null;
+			this.setIntervalId = undefined;
 		}
 	}
 
@@ -218,5 +213,10 @@ export default class MetronomeEngine {
 	}
 	get playing() {
 		return this._playing;
+	}
+	set animationCallback(
+		callback: (beat: number, secondsPerBeat: number) => void
+	) {
+		this._animationCallback = callback;
 	}
 }
