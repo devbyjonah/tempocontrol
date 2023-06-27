@@ -6,28 +6,14 @@ import Slider from "@/components/slider";
 import ModalOverlay from "./modalOverlay";
 import ModalContent from "./modalContent";
 import TempoSlider from "./tempoSlider";
+import Beater from "./beater";
 
 import { useRef, useState, useEffect } from "react";
 
 export default function Metronome() {
-	// ref to DOM element
-	const beater = useRef<HTMLImageElement>(null);
-	// animation callback is passed to the metronome engine and invoked on each beat
-	const animationCallback = (beat: number, secondsPerBeat: number) => {
-		if (beater.current) {
-			const rotateValue =
-				beater.current.style.transform ===
-				"translate(-50%) rotate(30deg)"
-					? "-30deg"
-					: "30deg";
-
-			beater.current.style.transition = `transform ${secondsPerBeat}s linear`;
-			beater.current.style.transform = `translate(-50%) rotate(${rotateValue})`;
-		}
-	};
 	// store instance of MetronomeEngine in a ref so that it persists between renders
 	// the ref acts as the single source of truth for the metronome state
-	const metronomeEngine = useRef(new MetronomeEngine(animationCallback));
+	const metronomeEngine = useRef(new MetronomeEngine());
 	// state for metronome values that are set by user
 	const [tempo, setTempo] = useState(metronomeEngine.current.tempo);
 	const [playing, setPlaying] = useState(metronomeEngine.current.playing);
@@ -116,15 +102,7 @@ export default function Metronome() {
 					width={50}
 					height={750}
 				/>
-				<Image
-					id="beater"
-					ref={beater}
-					className="absolute h-full -top-2 left-1/2 origin-bottom -translate-x-1/2"
-					src="/beater.png"
-					alt="metronome"
-					width={50}
-					height={750}
-				/>
+				<Beater metronomeEngine={metronomeEngine} />
 				<TempoSlider changeTempo={changeTempo} tempo={tempo} />
 			</div>
 			<div className="sm:w-2/5 text-black flex flex-col items-center sm:items-stretch">
