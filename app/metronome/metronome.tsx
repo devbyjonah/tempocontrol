@@ -5,23 +5,24 @@ import Button from "@/components/button";
 import Slider from "@/components/slider";
 import ModalOverlay from "./modalOverlay";
 import ModalContent from "./modalContent";
-
-import { useRef, useState, useEffect } from "react";
 import TempoSlider from "./tempoSlider";
 
+import { useRef, useState, useEffect } from "react";
+
 export default function Metronome() {
+	// ref to DOM element
+	const beater = useRef<HTMLImageElement>(null);
 	// animation callback is passed to the metronome engine and invoked on each beat
 	const animationCallback = (beat: number, secondsPerBeat: number) => {
-		const beater: HTMLImageElement | null =
-			document.querySelector("#beater");
-		if (beater) {
+		if (beater.current) {
 			const rotateValue =
-				beater.style.transform === "translate(-50%) rotate(30deg)"
+				beater.current.style.transform ===
+				"translate(-50%) rotate(30deg)"
 					? "-30deg"
 					: "30deg";
 
-			beater.style.transition = `transform ${secondsPerBeat}s linear`;
-			beater.style.transform = `translate(-50%) rotate(${rotateValue})`;
+			beater.current.style.transition = `transform ${secondsPerBeat}s linear`;
+			beater.current.style.transform = `translate(-50%) rotate(${rotateValue})`;
 		}
 	};
 	// store instance of MetronomeEngine in a ref so that it persists between renders
@@ -80,31 +81,6 @@ export default function Metronome() {
 		setModalOpen(true);
 	};
 
-	let currentY = 0,
-		previousY = 0;
-	const startDrag = (e: React.MouseEvent) => {
-		previousY = e.clientY;
-		const handleMouseUp = () => {
-			document.removeEventListener("mousemove", handleMouseMove);
-			window.removeEventListener("mouseup", handleMouseUp);
-		};
-
-		document.addEventListener("mousemove", handleMouseMove);
-		window.addEventListener("mouseup", handleMouseUp);
-	};
-	const handleMouseMove = (event: MouseEvent) => {
-		currentY = event.clientY;
-		let diff = currentY - previousY;
-		const sliderContainer = document.querySelector("#sliderContainer");
-		if (!sliderContainer) {
-			console.log("sliderContainer not found");
-			return;
-		}
-		const sliderHeight = sliderContainer.getBoundingClientRect().height;
-		const percentage = diff / (sliderHeight + 50);
-		const newTempo = tempo - Math.round(percentage * 180);
-		changeTempo(newTempo);
-	};
 	useEffect(() => {
 		// Cleanup function to stop the metronome and remove the audio context
 		return () => {
@@ -142,26 +118,14 @@ export default function Metronome() {
 				/>
 				<Image
 					id="beater"
+					ref={beater}
 					className="absolute h-full -top-2 left-1/2 origin-bottom -translate-x-1/2"
 					src="/beater.png"
 					alt="metronome"
 					width={50}
 					height={750}
 				/>
-				<div
-					id="sliderContainer"
-					style={{ height: "87%" }}
-					className="text-white text-2xl w-16 text-center absolute top-14 left-1/2 -translate-x-1/2"
-				>
-					<div
-						id="slider"
-						onMouseDown={startDrag}
-						style={{ bottom: ((tempo - 40) / 180) * 100 + "%" }}
-						className="bg-accent sm:hover:scale-125 font-bold rounded border-4 border-primary absolute left-0 right-0"
-					>
-						{tempo}
-					</div>
-				</div>
+				<TempoSlider changeTempo={changeTempo} tempo={tempo} />
 			</div>
 			<div className="sm:w-2/5 text-black flex flex-col items-center sm:items-stretch">
 				<div className="max-w-xs rounded settings-container my-auto flex flex-col gap-2">
