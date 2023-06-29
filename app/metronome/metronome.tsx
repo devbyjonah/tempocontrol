@@ -34,7 +34,7 @@ export default function Metronome() {
 		setPlaying(metronomeEngine.current.playing);
 		const beater: HTMLImageElement | null =
 			document.querySelector("#beater");
-		beater!!.style.transform = "translate(-50%) rotate(0deg)";
+		if (beater) beater.style.transform = "translate(-50%) rotate(0deg)";
 	};
 	const changeTempo = (value: number): number => {
 		metronomeEngine.current.tempo = value;

@@ -2,7 +2,7 @@ import Button from "../../components/button";
 import { BsArrowLeftCircleFill, BsArrowRightCircleFill } from "react-icons/bs";
 
 import { useState } from "react";
-// prettier-ignore
+
 interface IContent {
 	[key: string]: {
 		description: string;
