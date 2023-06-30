@@ -213,23 +213,21 @@ export default class MetronomeEngine {
 	set volume(value: number) {
 		if (value >= 0 && value <= 100) {
 			this._volume = (value / 100) * 1.5;
-			console.log(this._volume);
 		}
 	}
 
 	get volume() {
 		return (this._volume / 1.5) * 100;
 	}
-
+	// convert pitch range from 0 to 100 to 100 to 2000
 	set pitch(value: number) {
 		if (value >= 0 && value <= 100) {
-			this._pitch = (value / 100) * 1.5;
-			console.log(this._pitch);
+			this._pitch = (value / 100) * 2000 + 100;
 		}
 	}
 
 	get pitch() {
-		return (this._pitch / 1.5) * 100;
+		return ((this._pitch - 100) / 2000) * 100;
 	}
 
 	get currentBeat() {

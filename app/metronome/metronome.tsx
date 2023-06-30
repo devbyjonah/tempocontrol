@@ -18,6 +18,7 @@ export default function Metronome() {
 	const [tempo, setTempo] = useState(metronomeEngine.current.tempo);
 	const [playing, setPlaying] = useState(metronomeEngine.current.playing);
 	const [volume, setVolume] = useState(metronomeEngine.current.volume);
+	const [pitch, setPitch] = useState(metronomeEngine.current.pitch);
 	const [subdivision, setSubdivision] = useState(
 		metronomeEngine.current.subdivision
 	);
@@ -59,6 +60,12 @@ export default function Metronome() {
 	const changeVolume = (value: number) => {
 		metronomeEngine.current.volume = value;
 		const updated = metronomeEngine.current.volume;
+		setVolume(updated);
+		return updated;
+	};
+	const changePitch = (value: number) => {
+		metronomeEngine.current.pitch = value;
+		const updated = metronomeEngine.current.pitch;
 		setVolume(updated);
 		return updated;
 	};
@@ -146,11 +153,18 @@ export default function Metronome() {
 						}
 					/>
 					<Slider
-						handler={(value: string): number => {
-							return changeVolume(parseInt(value));
-						}}
+						handler={(value: string): number =>
+							changeVolume(parseInt(value))
+						}
 						initial={volume}
 						label="Volume"
+					/>
+					<Slider
+						handler={(value: string): number =>
+							changePitch(parseInt(value))
+						}
+						initial={pitch}
+						label="Pitch"
 					/>
 				</div>
 			</div>
