@@ -64,7 +64,8 @@ export default class MetronomeEngine {
 		const osc = this.audioContext!!.createOscillator();
 		const envelope = this.audioContext!!.createGain();
 		const gainNode = new GainNode(this.audioContext!!);
-
+		// this._volume is set from 0-100 for ease of use
+		// gainNode.gain.value is set from -1.5 - 2.5
 		gainNode.gain.value = this._volume;
 		// assign higher frequency for downbeats only
 		let pitch = beatNumber === 0 ? this._pitch * 1.2 : this._pitch;
@@ -202,12 +203,35 @@ export default class MetronomeEngine {
 	get tempo() {
 		return this._tempo;
 	}
+	/* 
+	volume setter and getter exposes range of 0 to 100
+	to simplify usage in metronome component
 
+	the underlying range goes from 0 to 1.5
+		
+	 */
 	set volume(value: number) {
-		if (value > -1 && value < 3) {
-			this._volume = value;
+		if (value >= 0 && value <= 100) {
+			this._volume = (value / 100) * 1.5;
+			console.log(this._volume);
 		}
 	}
+
+	get volume() {
+		return (this._volume / 1.5) * 100;
+	}
+
+	set pitch(value: number) {
+		if (value >= 0 && value <= 100) {
+			this._pitch = (value / 100) * 1.5;
+			console.log(this._pitch);
+		}
+	}
+
+	get pitch() {
+		return (this._pitch / 1.5) * 100;
+	}
+
 	get currentBeat() {
 		return this._currentBeat;
 	}
