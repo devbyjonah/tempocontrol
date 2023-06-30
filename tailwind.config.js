@@ -19,6 +19,10 @@ module.exports = {
           dark: "#111111",
           transparent: "rgba(0, 0, 0, 0.75)",
         },
+        gradient: {
+          DEFAULT: "linear-gradient(90deg, #12876c 0%, #126887 100%)",
+          dark: "linear-gradient(90deg, #0a3b4b 0%, #126887 100%)",
+        },
       },
     },
     boxShadow: {
