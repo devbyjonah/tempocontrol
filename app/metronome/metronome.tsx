@@ -8,7 +8,7 @@ import ModalContent from "./modalContent";
 import TempoSlider from "./tempoSlider";
 import Beater from "./beater";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, RefObject } from "react";
 
 export default function Metronome() {
 	// store instance of MetronomeEngine in a ref so that it persists between renders
@@ -17,6 +17,7 @@ export default function Metronome() {
 	// state for metronome values that are set by user
 	const [tempo, setTempo] = useState(metronomeEngine.current.tempo);
 	const [playing, setPlaying] = useState(metronomeEngine.current.playing);
+	const [volume, setVolume] = useState(metronomeEngine.current.volume);
 	const [subdivision, setSubdivision] = useState(
 		metronomeEngine.current.subdivision
 	);
@@ -36,20 +37,30 @@ export default function Metronome() {
 			document.querySelector("#beater");
 		if (beater) beater.style.transform = "translate(-50%) rotate(0deg)";
 	};
+	/*** Refactor needed ***/
 	const changeTempo = (value: number): number => {
 		metronomeEngine.current.tempo = value;
-		setTempo(metronomeEngine.current.tempo);
-		return metronomeEngine.current.tempo;
+		const updated = metronomeEngine.current.tempo;
+		setTempo(updated);
+		return updated;
 	};
 	const changeSubdivision = (value: number): number => {
 		metronomeEngine.current.subdivision = value;
-		setSubdivision(metronomeEngine.current.subdivision);
-		return metronomeEngine.current.subdivision;
+		const updated = metronomeEngine.current.subdivision;
+		setSubdivision(updated);
+		return updated;
 	};
 	const changeTimeSignature = (value: number): number => {
 		metronomeEngine.current.beatsPerMeasure = value;
-		setBeatsPerMeasure(metronomeEngine.current.beatsPerMeasure);
-		return metronomeEngine.current.beatsPerMeasure;
+		const updated = metronomeEngine.current.beatsPerMeasure;
+		setBeatsPerMeasure(updated);
+		return updated;
+	};
+	const changeVolume = (value: number) => {
+		metronomeEngine.current.volume = value;
+		const updated = metronomeEngine.current.volume;
+		setVolume(updated);
+		return updated;
 	};
 	// event handler to open and set modal content
 	const openModal = (
@@ -134,8 +145,14 @@ export default function Metronome() {
 							)
 						}
 					/>
+					<Slider
+						handler={(value: string): number => {
+							return changeVolume(parseInt(value));
+						}}
+						initial={volume}
+						label="Volume"
+					/>
 				</div>
-				<Slider />
 			</div>
 		</div>
 	);
