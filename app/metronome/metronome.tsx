@@ -43,6 +43,11 @@ export default function Metronome() {
 		metronomeEngine.current.tempo = value;
 		const updated = metronomeEngine.current.tempo;
 		setTempo(updated);
+		const tempoInput: HTMLInputElement | null =
+			document.querySelector("#tempoInput");
+		if (tempoInput) {
+			tempoInput.defaultValue = tempo.toString();
+		}
 		return updated;
 	};
 	const changeSubdivision = (value: number): number => {

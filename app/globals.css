@@ -38,6 +38,17 @@
 	border-right: 10px solid transparent;
 	border-top: 10px solid black;
 }
+/* add small red arrow pointing towards the right from outside the bottom right side */
+#tempoRange:after {
+	content: "";
+	position: absolute;
+	bottom: 15px;
+	right: -20px;
+	margin-bottom: -10px;
+	border-top: 20px solid transparent;
+	border-bottom: 20px solid transparent;
+	border-left: 20px solid rgb(239, 68, 68);
+}
 
 input[type="range"] {
 	-webkit-appearance: none;
