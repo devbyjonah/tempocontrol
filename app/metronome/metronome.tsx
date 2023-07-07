@@ -71,7 +71,7 @@ export default function Metronome() {
 	const changePitch = (value: number) => {
 		metronomeEngine.current.pitch = value;
 		const updated = metronomeEngine.current.pitch;
-		setVolume(updated);
+		setPitch(updated);
 		return updated;
 	};
 	// event handler to open and set modal content
