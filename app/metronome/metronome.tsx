@@ -98,7 +98,7 @@ export default function Metronome() {
 	}, []);
 
 	return (
-		<div className="flex flex-col-reverse sm:flex-row">
+		<div className="flex flex-col-reverse sm:flex-row justify-center gap-4 lg:gap-32">
 			<ModalOverlay
 				isOpen={modalOpen}
 				onClose={() => setModalOpen(false)}
@@ -106,7 +106,7 @@ export default function Metronome() {
 			/>
 			<div
 				id="metronomeContainer"
-				className="relative mt-28 sm:mt-40 mx-auto select-none"
+				className="relative mt-28 sm:mt-40 mx-auto sm:mx-0 select-none"
 				style={{ maxWidth: 500 + "px", maxHeight: 750 + "px" }}
 			>
 				<Image
@@ -128,7 +128,7 @@ export default function Metronome() {
 				<Beater metronomeEngine={metronomeEngine} />
 				<TempoSlider changeTempo={changeTempo} tempo={tempo} />
 			</div>
-			<div className="mt-24 sm:mt-0 sm:w-2/5 text-black flex flex-col items-center sm:items-stretch">
+			<div className="mt-24 sm:mt-0 text-black flex flex-col items-center sm:items-stretch">
 				<div className="max-w-xs rounded settings-container my-auto flex flex-col gap-2">
 					<Button
 						label={playing ? "Stop" : "Start"}
