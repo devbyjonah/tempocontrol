@@ -13,20 +13,32 @@ export default function TempoSlider({
 	const slider = useRef<HTMLDivElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
 
+	type MouseAndTouch = React.TouchEvent | React.MouseEvent;
 	let currentY = 0,
 		previousY = 0;
-	const startDrag = (e: React.MouseEvent) => {
-		previousY = e.clientY;
-		const handleMouseUp = () => {
-			document.removeEventListener("mousemove", handleMouseMove);
-			window.removeEventListener("mouseup", handleMouseUp);
+	const startDrag = (e: MouseAndTouch) => {
+		const handleEnd = () => {
+			document.removeEventListener("touchmove", handleMove);
+			document.removeEventListener("touchend", handleEnd);
+			document.removeEventListener("mousemove", handleMove);
+			window.removeEventListener("mouseup", handleEnd);
 		};
-
-		document.addEventListener("mousemove", handleMouseMove);
-		window.addEventListener("mouseup", handleMouseUp);
+		if (e.type === "touchstart") {
+			previousY = (e as React.TouchEvent).touches[0].clientY;
+			document.addEventListener("touchmove", handleMove);
+			document.addEventListener("touchend", handleEnd);
+		} else {
+			previousY = (e as React.MouseEvent).clientY;
+			document.addEventListener("mousemove", handleMove);
+			window.addEventListener("mouseup", handleEnd);
+		}
 	};
-	const handleMouseMove = (event: MouseEvent) => {
-		currentY = event.clientY;
+	const handleMove = (event: MouseEvent | TouchEvent) => {
+		if (event.type === "mousemove") {
+			currentY = (event as MouseEvent).clientY;
+		} else {
+			currentY = (event as TouchEvent).touches[0].clientY;
+		}
 		let diff = currentY - previousY;
 		const sliderHeight =
 			sliderContainer.current?.getBoundingClientRect().height;
@@ -50,8 +62,9 @@ export default function TempoSlider({
 				id="slider"
 				ref={slider}
 				onMouseDown={startDrag}
+				onTouchStart={startDrag}
 				style={{ bottom: ((tempo - 40) / 180) * 100 + "%" }}
-				className="bg-accent sm:hover:scale-125 font-bold rounded border-4 border-primary absolute left-0 right-0"
+				className="bg-accent touch-none sm:hover:scale-125 font-bold rounded border-4 border-primary absolute left-0 right-0"
 			>
 				<input
 					ref={inputRef}
