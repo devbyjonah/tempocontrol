@@ -8,7 +8,7 @@ import ModalContent from "./modalContent";
 import TempoSlider from "./tempoSlider";
 import Beater from "./beater";
 
-import { useRef, useState, useEffect, RefObject } from "react";
+import { useRef, useState, useEffect } from "react";
 
 export default function Metronome() {
 	// store instance of MetronomeEngine in a ref so that it persists between renders
@@ -106,7 +106,7 @@ export default function Metronome() {
 			/>
 			<div
 				id="metronomeContainer"
-				className="relative mt-28 sm:mt-40 mx-auto sm:mx-0 select-none"
+				className="overflow-x-hidden sm:overflow-x-visible relative mt-28 sm:mt-40 mx-auto sm:mx-0 select-none"
 				style={{ maxWidth: 500 + "px", maxHeight: 750 + "px" }}
 			>
 				<Image

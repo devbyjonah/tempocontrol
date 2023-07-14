@@ -69,6 +69,7 @@ export default function TempoSlider({
 				<input
 					ref={inputRef}
 					type="text"
+					maxLength={3}
 					defaultValue={tempo}
 					className="bg-accent w-full text-center"
 					onChange={(e) => {
