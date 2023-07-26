@@ -7,6 +7,7 @@ import ModalOverlay from "./modalOverlay";
 import ModalContent from "./modalContent";
 import TempoSlider from "./tempoSlider";
 import Beater from "./beater";
+import SpotifySearch from "@/components/spotifySearch";
 
 import { useRef, useState, useEffect } from "react";
 
@@ -171,6 +172,7 @@ export default function Metronome() {
 						initial={pitch}
 						label="Pitch"
 					/>
+					<SpotifySearch />
 				</div>
 			</div>
 		</div>
