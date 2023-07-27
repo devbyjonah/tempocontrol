@@ -7,8 +7,8 @@ import AuthContext from "@/app/AuthContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Online Metronome",
-  description: "A simple online metronome",
+  title: "Tempo Control",
+  description: "Collection of tools to help you improve your tempo control.",
 };
 
 export default function RootLayout({
