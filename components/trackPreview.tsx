@@ -1,6 +1,6 @@
 import SpotifyTrack from "@/interfaces/spotify";
 import Image from "next/image";
-import { Key } from "react";
+import { truncate } from "../lib/utils";
 
 export default function TrackPreview({ track }: { track: SpotifyTrack }) {
 	return (
@@ -12,7 +12,7 @@ export default function TrackPreview({ track }: { track: SpotifyTrack }) {
 				height={75}
 			/>
 			<div className="flex flex-col">
-				<h3 className="text-lg">{track.name}</h3>
+				<h3 className="text-lg">{truncate(track.name, 35)}</h3>
 				<p className="text-sm">{track.artist}</p>
 			</div>
 		</div>
