@@ -47,15 +47,17 @@ export default function SpotifySearch() {
 	}, []);
 
 	return (
-		<div className="flex flex-col gap-4">
+		<div className="flex flex-col gap-4 mt-8 cursor-pointer">
+			<label htmlFor="search" className="text-lg text-white">
+				Search for a song and set metronome&apos;s tempo to match.
+			</label>
 			<input
+				name="search"
+				className="rounded-md p-2"
 				type="text"
 				placeholder="Search songs"
 				onChange={(value) => debounceSearch(value.target.value)}
 			/>
-			<h1 className="text-lg text-white">
-				Search and select song to set BPM.
-			</h1>
 			{searchResults}
 		</div>
 	);
