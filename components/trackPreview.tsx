@@ -4,7 +4,10 @@ import { truncate } from "../lib/utils";
 
 export default function TrackPreview({ track }: { track: SpotifyTrack }) {
 	return (
-		<div id={track.id} className="w-full rounded flex p-4 bg-white gap-4">
+		<div
+			id={track.id}
+			className="w-full rounded flex p-4 bg-white border-2 border-primary border-solid gap-4"
+		>
 			<Image
 				src={track.albumImg}
 				alt="album cover"

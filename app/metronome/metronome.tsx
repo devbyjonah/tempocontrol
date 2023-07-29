@@ -129,7 +129,7 @@ export default function Metronome() {
 				<Beater metronomeEngine={metronomeEngine} />
 				<TempoSlider changeTempo={changeTempo} tempo={tempo} />
 			</div>
-			<div className="mt-24 sm:mt-0 text-black flex flex-col items-center sm:items-stretch">
+			<div className="mt-24 sm:mt-40 text-black mx-auto sm:mx-0">
 				<div className="max-w-xs rounded settings-container my-auto flex flex-col gap-2">
 					<Button
 						label={playing ? "Stop" : "Start"}

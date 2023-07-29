@@ -5,11 +5,13 @@ import Link from "next/link";
 export default function Button({
 	label,
 	link,
+	hover,
 	className,
 	onClick,
 }: {
 	label: string;
 	link?: string;
+	hover?: boolean;
 	className?: string;
 	onClick?: () => void;
 }) {
@@ -17,8 +19,11 @@ export default function Button({
 		return (
 			<Link
 				className={
-					"py-3 px-5 rounded text-lg font-bold hover:-translate-y-1 hover:shadow-secondary " +
-					className
+					className +
+					" py-3 px-5 rounded text-lg font-bold " +
+					(hover
+						? " hover:-translate-y-1 hover:shadow-secondary"
+						: "")
 				}
 				href={link}
 			>
@@ -32,8 +37,11 @@ export default function Button({
 		return (
 			<button
 				className={
-					"py-3 px-5 rounded text-lg font-bold hover:-translate-y-1 hover:shadow-secondary " +
-					className
+					className +
+					" py-3 px-5 rounded text-lg font-bold " +
+					(hover
+						? "hover:-translate-y-1 hover:shadow-secondary "
+						: "")
 				}
 				onClick={onClick}
 			>

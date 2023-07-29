@@ -52,8 +52,8 @@ export default function SpotifySearch() {
 				Search for a song and set metronome&apos;s tempo to match.
 			</label>
 			<input
-				name="search"
-				className="rounded-md p-2"
+				id="search"
+				className="rounded-md p-2 border-2 border-primary border-solid"
 				type="text"
 				placeholder="Search songs"
 				onChange={(value) => debounceSearch(value.target.value)}

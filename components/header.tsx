@@ -16,6 +16,7 @@ export default async function Header() {
 					<Button
 						className="bg-primary"
 						label={session ? "Logout" : "Login"}
+						hover
 					/>
 					<Image
 						className="rounded-full border-2 border-accent-dark justify-self-end hidden sm:inline"
@@ -30,11 +31,13 @@ export default async function Header() {
 						className="bg-white hidden sm:inline"
 						label="Home"
 						link="/"
+						hover
 					/>
 					<Button
 						className="bg-white hidden sm:inline"
 						label="Metronome"
 						link="/metronome"
+						hover
 					/>
 					<DropDownToggle />
 				</ul>
