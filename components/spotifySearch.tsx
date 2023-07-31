@@ -1,11 +1,15 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
 
-import { getSpotifyToken, searchSpotify } from "../lib/spotify";
+import { getSpotifyToken, searchSpotify, getTempo } from "../lib/spotify";
 import SpotifyTrack from "@/interfaces/spotify";
 import TrackPreview from "./trackPreview";
 
-export default function SpotifySearch() {
+export default function SpotifySearch({
+	changeTempo,
+}: {
+	changeTempo: (value: number) => number;
+}) {
 	const [token, setToken] = useState("");
 	const [searchResults, setSearchResults] = useState<JSX.Element[]>([]);
 	const debounceRef = useRef<NodeJS.Timeout>();
@@ -19,7 +23,13 @@ export default function SpotifySearch() {
 		if (tracks) {
 			const previewElements: JSX.Element[] = tracks.map(
 				(track: SpotifyTrack) => {
-					return <TrackPreview key={track.id} track={track} />;
+					return (
+						<TrackPreview
+							key={track.id}
+							track={track}
+							onClick={setTempoFromTrack}
+						/>
+					);
 				}
 			);
 			setSearchResults(previewElements);
@@ -33,10 +43,16 @@ export default function SpotifySearch() {
 		debounceRef.current = setTimeout(() => search(token, query), 300);
 	}
 
+	async function setTempoFromTrack(event: React.MouseEvent<HTMLDivElement>) {
+		const trackId = event.currentTarget.id;
+		const tempo = await getTempo(token, trackId);
+		if (tempo) changeTempo(tempo);
+	}
+
 	useEffect(() => {
 		async function fetchToken() {
 			const token = await getSpotifyToken();
-			setToken(token);
+			if (token) setToken(token);
 		}
 		fetchToken();
 		return () => {

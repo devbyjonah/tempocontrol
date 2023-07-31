@@ -1,6 +1,6 @@
 import SpotifyTrack from "@/interfaces/spotify";
 
-export async function getSpotifyToken() {
+export async function getSpotifyToken(): Promise<string | undefined> {
 	const requestOptions = {
 		method: "POST",
 		headers: {
@@ -17,10 +17,14 @@ export async function getSpotifyToken() {
 		return data.access_token;
 	} catch (error) {
 		console.log(error);
+		return;
 	}
 }
 
-export async function searchSpotify(token: string, query: string) {
+export async function searchSpotify(
+	token: string,
+	query: string
+): Promise<SpotifyTrack[]> {
 	const requestOptions = {
 		method: "GET",
 		headers: {
@@ -44,6 +48,29 @@ export async function searchSpotify(token: string, query: string) {
 		return tracks;
 	} catch (error) {
 		console.log(error);
-		return undefined;
+		return [];
+	}
+}
+
+export async function getTempo(
+	token: string,
+	id: string
+): Promise<number | undefined> {
+	const requestOptions = {
+		method: "GET",
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	};
+	try {
+		const response = await fetch(
+			`https://api.spotify.com/v1/audio-features/${id}`,
+			requestOptions
+		);
+		const data = await response.json();
+		return Math.round(data.tempo);
+	} catch (error) {
+		console.log(`Error fetching tempo: ${error}`);
+		return;
 	}
 }

@@ -172,7 +172,7 @@ export default function Metronome() {
 						initial={pitch}
 						label="Pitch"
 					/>
-					<SpotifySearch />
+					<SpotifySearch changeTempo={changeTempo} />
 				</div>
 			</div>
 		</div>
