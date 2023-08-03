@@ -1,4 +1,3 @@
-"use client";
 import { useEffect, useState, useRef } from "react";
 
 import { getSpotifyToken, searchSpotify, getTempo } from "../lib/spotify";
@@ -10,30 +9,42 @@ export default function SpotifySearch({
 }: {
 	changeTempo: (value: number) => number;
 }) {
-	const [token, setToken] = useState("");
+	const [token, setToken] = useState<string>("");
+	const [tokenExpiration, setTokenExpiration] = useState<number>(0);
 	const [searchResults, setSearchResults] = useState<JSX.Element[]>([]);
 	const debounceRef = useRef<NodeJS.Timeout>();
+
+	async function fetchToken() {
+		const token = await getSpotifyToken();
+		if (token) {
+			setToken(token);
+			setTokenExpiration(Date.now() + 3600000);
+		}
+	}
 
 	async function search(token: string, query: string) {
 		if (!query.trim()) {
 			setSearchResults([]);
 			return;
 		}
-		const tracks = await searchSpotify(token, query);
-		if (tracks) {
-			const previewElements: JSX.Element[] = tracks.map(
-				(track: SpotifyTrack) => {
-					return (
-						<TrackPreview
-							key={track.id}
-							track={track}
-							onClick={setTempoFromTrack}
-						/>
-					);
-				}
-			);
-			setSearchResults(previewElements);
+		if (!token || Date.now() > tokenExpiration) {
+			await fetchToken();
 		}
+		const tracks = await searchSpotify(token, query);
+		if (!tracks) return;
+
+		const previewElements: JSX.Element[] = tracks.map(
+			(track: SpotifyTrack) => {
+				return (
+					<TrackPreview
+						key={track.id}
+						track={track}
+						onClick={setTempoFromTrack}
+					/>
+				);
+			}
+		);
+		setSearchResults(previewElements);
 	}
 
 	function debounceSearch(query: string) {
@@ -44,23 +55,25 @@ export default function SpotifySearch({
 	}
 
 	async function setTempoFromTrack(event: React.MouseEvent<HTMLDivElement>) {
+		if (!token || Date.now() > tokenExpiration) {
+			await fetchToken();
+		}
 		const trackId = event.currentTarget.id;
 		const tempo = await getTempo(token, trackId);
 		if (tempo) changeTempo(tempo);
 	}
 
 	useEffect(() => {
-		async function fetchToken() {
-			const token = await getSpotifyToken();
-			if (token) setToken(token);
+		if (!token || Date.now() > tokenExpiration) {
+			fetchToken();
 		}
-		fetchToken();
+
 		return () => {
 			if (debounceRef.current) {
 				clearTimeout(debounceRef.current);
 			}
 		};
-	}, []);
+	}, [token, tokenExpiration]);
 
 	return (
 		<div className="flex flex-col gap-4 mt-8 cursor-pointer">
