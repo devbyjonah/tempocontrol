@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 export default function TempoSlider({
 	tempo,
@@ -8,6 +8,7 @@ export default function TempoSlider({
 	changeTempo: (value: number) => number;
 }) {
 	const [showTempoRange, setShowTempoRange] = useState(false);
+	const [tempoInput, setTempoInput] = useState(tempo.toString());
 
 	const sliderContainer = useRef<HTMLDivElement>(null);
 	const slider = useRef<HTMLDivElement>(null);
@@ -51,6 +52,10 @@ export default function TempoSlider({
 		}
 	};
 
+	useEffect(() => {
+		setTempoInput(tempo.toString());
+	}, [tempo]);
+
 	return (
 		<div
 			id="sliderContainer"
@@ -70,16 +75,18 @@ export default function TempoSlider({
 					ref={inputRef}
 					type="text"
 					maxLength={3}
-					defaultValue={tempo}
+					value={tempoInput}
 					className="bg-accent w-full text-center"
 					onChange={(e) => {
-						const value = parseInt(e.target.value);
+						let value: number | string = e.target.value;
+						setTempoInput(value);
+						value = parseInt(value);
 						if (!value || value < 40 || value > 220) {
 							setShowTempoRange(true);
-							return;
+						} else {
+							setShowTempoRange(false);
+							changeTempo(value);
 						}
-						setShowTempoRange(false);
-						changeTempo(parseInt(e.target.value));
 					}}
 				/>
 			</div>
