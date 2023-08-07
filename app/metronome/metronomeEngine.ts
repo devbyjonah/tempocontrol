@@ -9,26 +9,33 @@ export default class MetronomeEngine {
 	private previousTap: number;
 	// private attributes with additional getter/setter methods
 	// _ prefix to avoid naming conflicts with methods
-	private _beatsPerMeasure: number;
-	private _tempo: number;
-	private _volume: number;
-	private _pitch: number;
-	private _subdivision: number;
+	private _beatsPerMeasure: number = 4;
+	private _tempo: number = 120;
+	private _volume: number = 1.0;
+	private _pitch: number = 1000;
+	private _subdivision: number = 1;
 	private _currentBeat: number;
 	private _playing: boolean;
 	private _animationCallback?: (beat: number, secondsPerBeat: number) => void;
 
-	constructor() {
+	constructor(
+		tempo: number,
+		beatsPerMeasure: number,
+		volume: number,
+		pitch: number,
+		subdivision: number
+	) {
+		this.beatsPerMeasure = beatsPerMeasure;
+		this.tempo = tempo;
+		this.volume = volume;
+		this.pitch = pitch;
+		this.subdivision = subdivision;
+
 		this._currentBeat = 0;
-		this._beatsPerMeasure = 4;
-		this._tempo = 120;
 		this.lookahead = 25.0; // how often to call scheduling function (in milliseconds)
 		this.scheduleAheadTime = 0.1; // how far ahead to schedule audio (sec)
 		this.nextNoteTime = 0.0; // time next note should play
 		this._playing = false;
-		this._volume = 1.0;
-		this._pitch = 1000;
-		this._subdivision = 1;
 		this.tapDifferenceArray = [];
 		this.previousTap = 0;
 	}
