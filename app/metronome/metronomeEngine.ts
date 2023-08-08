@@ -9,27 +9,28 @@ export default class MetronomeEngine {
 	private previousTap: number;
 	// private attributes with additional getter/setter methods
 	// _ prefix to avoid naming conflicts with methods
-	private _beatsPerMeasure: number = 4;
-	private _tempo: number = 120;
+	private _beatsPerMeasure: number;
+	private _tempo: number;
 	private _volume: number = 1.0;
 	private _pitch: number = 1000;
-	private _subdivision: number = 1;
+	private _subdivision: number;
 	private _currentBeat: number;
 	private _playing: boolean;
 	private _animationCallback?: (beat: number, secondsPerBeat: number) => void;
 
 	constructor(
-		tempo: number,
-		beatsPerMeasure: number,
-		volume: number,
-		pitch: number,
-		subdivision: number
+		tempo: number = 120,
+		beatsPerMeasure: number = 4,
+		volume: number = 50,
+		pitch: number = 50,
+		subdivision: number = 1,
 	) {
-		this.beatsPerMeasure = beatsPerMeasure;
-		this.tempo = tempo;
+		this._beatsPerMeasure = beatsPerMeasure;
+		this._tempo = tempo;
+		this._subdivision = subdivision;
+		// assign through setters for range conversion
 		this.volume = volume;
 		this.pitch = pitch;
-		this.subdivision = subdivision;
 
 		this._currentBeat = 0;
 		this.lookahead = 25.0; // how often to call scheduling function (in milliseconds)
@@ -58,7 +59,7 @@ export default class MetronomeEngine {
 				this.scheduleNote(
 					this.currentBeat,
 					this.nextNoteTime + secondsPerSubdivision * i,
-					i === 0
+					i === 0,
 				);
 			}
 			// move on to next beat
@@ -155,7 +156,7 @@ export default class MetronomeEngine {
 
 		this.setIntervalId = setInterval(
 			() => this.scheduler(),
-			this.lookahead
+			this.lookahead,
 		);
 	}
 
@@ -244,7 +245,7 @@ export default class MetronomeEngine {
 		return this._playing;
 	}
 	set animationCallback(
-		callback: (beat: number, secondsPerBeat: number) => void
+		callback: (beat: number, secondsPerBeat: number) => void,
 	) {
 		this._animationCallback = callback;
 	}

@@ -54,6 +54,9 @@ export default function TempoSlider({
 
 	useEffect(() => {
 		setTempoInput(tempo.toString());
+		if (slider.current) {
+			slider.current.style.bottom = ((tempo - 40) / 180) * 100 + "%";
+		}
 	}, [tempo]);
 
 	return (
