@@ -34,7 +34,7 @@ export default function SpotifySearch({
 			setSearchResults([]);
 			return;
 		}
-		if (!token || Date.now() > tokenExpiration) {
+		if (!token || (Date.now() > tokenExpiration && !fetchingToken)) {
 			await fetchToken();
 		}
 		const tracks = await searchSpotify(token, query);
@@ -71,15 +71,19 @@ export default function SpotifySearch({
 	}
 
 	useEffect(() => {
-		if (!token || Date.now() > tokenExpiration) {
-			fetchToken();
-		}
+		const refreshToken = async () => {
+			if (!token || (Date.now() > tokenExpiration && !fetchingToken)) {
+				await fetchToken();
+			}
+		};
+		refreshToken();
 
 		return () => {
 			if (debounceRef.current) {
 				clearTimeout(debounceRef.current);
 			}
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [token, tokenExpiration]);
 
 	return (
