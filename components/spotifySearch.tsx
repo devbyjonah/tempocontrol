@@ -11,15 +11,22 @@ export default function SpotifySearch({
 }) {
 	const [token, setToken] = useState<string>("");
 	const [tokenExpiration, setTokenExpiration] = useState<number>(0);
+	const [fetchingToken, setFetchingToken] = useState<boolean>(false);
+
 	const [searchResults, setSearchResults] = useState<JSX.Element[]>([]);
 	const debounceRef = useRef<NodeJS.Timeout>();
 
 	async function fetchToken() {
+		// exit early if still fetching token
+		if (fetchingToken) return;
+
+		setFetchingToken(true);
 		const token = await getSpotifyToken();
 		if (token) {
 			setToken(token);
 			setTokenExpiration(Date.now() + 3600000);
 		}
+		setFetchingToken(false);
 	}
 
 	async function search(token: string, query: string) {
@@ -27,7 +34,7 @@ export default function SpotifySearch({
 			setSearchResults([]);
 			return;
 		}
-		if (!token || Date.now() > tokenExpiration) {
+		if (!token || (Date.now() > tokenExpiration && !fetchingToken)) {
 			await fetchToken();
 		}
 		const tracks = await searchSpotify(token, query);
@@ -42,7 +49,7 @@ export default function SpotifySearch({
 						onClick={setTempoFromTrack}
 					/>
 				);
-			}
+			},
 		);
 		setSearchResults(previewElements);
 	}
@@ -64,15 +71,19 @@ export default function SpotifySearch({
 	}
 
 	useEffect(() => {
-		if (!token || Date.now() > tokenExpiration) {
-			fetchToken();
-		}
+		const refreshToken = async () => {
+			if (!token || (Date.now() > tokenExpiration && !fetchingToken)) {
+				await fetchToken();
+			}
+		};
+		refreshToken();
 
 		return () => {
 			if (debounceRef.current) {
 				clearTimeout(debounceRef.current);
 			}
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [token, tokenExpiration]);
 
 	return (

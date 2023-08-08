@@ -10,21 +10,21 @@ import Beater from "./beater";
 import SpotifySearch from "@/components/spotifySearch";
 
 import { useRef, useState, useEffect } from "react";
+import usePersistedState from "@/hooks/usePersistedState";
 
 export default function Metronome() {
+	// custom hook to persist state in local storage
+	const [tempo, setTempo] = usePersistedState("tempo", 120);
+	const [volume, setVolume] = usePersistedState("volume", 50);
+	const [pitch, setPitch] = usePersistedState("pitch", 50);
+	const [subdivision, setSubdivision] = usePersistedState("subdivision", 1);
+	const [beatsPerMeasure, setBeatsPerMeasure] = usePersistedState("beats", 4);
+
+	const [playing, setPlaying] = useState(false);
 	// store instance of MetronomeEngine in a ref so that it persists between renders
 	// the ref acts as the single source of truth for the metronome state
-	const metronomeEngine = useRef(new MetronomeEngine());
-	// state for metronome values that are set by user
-	const [tempo, setTempo] = useState(metronomeEngine.current.tempo);
-	const [playing, setPlaying] = useState(metronomeEngine.current.playing);
-	const [volume, setVolume] = useState(metronomeEngine.current.volume);
-	const [pitch, setPitch] = useState(metronomeEngine.current.pitch);
-	const [subdivision, setSubdivision] = useState(
-		metronomeEngine.current.subdivision
-	);
-	const [beatsPerMeasure, setBeatsPerMeasure] = useState(
-		metronomeEngine.current.beatsPerMeasure
+	const metronomeEngine = useRef(
+		new MetronomeEngine(tempo, beatsPerMeasure, volume, pitch, subdivision),
 	);
 
 	// state for managing settings modals
@@ -79,14 +79,14 @@ export default function Metronome() {
 	const openModal = (
 		title: string,
 		value: number,
-		handler: (value: number) => number
+		handler: (value: number) => number,
 	) => {
 		setModalContent(
 			<ModalContent
 				title={title}
 				initialValue={value}
 				changeValue={handler}
-			/>
+			/>,
 		);
 		setModalOpen(true);
 	};
@@ -143,7 +143,7 @@ export default function Metronome() {
 							openModal(
 								"Subdivide",
 								subdivision,
-								changeSubdivision
+								changeSubdivision,
 							)
 						}
 					/>
@@ -154,7 +154,7 @@ export default function Metronome() {
 							openModal(
 								"Time Signature",
 								beatsPerMeasure,
-								changeTimeSignature
+								changeTimeSignature,
 							)
 						}
 					/>

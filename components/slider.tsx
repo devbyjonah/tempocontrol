@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export default function Slider({
 	handler,
@@ -14,20 +14,27 @@ export default function Slider({
 		const value: number = handler((event.target as HTMLInputElement).value);
 		setValue(value);
 	};
-	const backgroundPercentage = (): { backgroundSize: string } => {
-		return { backgroundSize: `${value}% 100%` };
-	};
+
+	// ref for input element
+	const inputRef = useRef<HTMLInputElement>(null);
+
+	useEffect(() => {
+		if (inputRef.current) {
+			inputRef.current.style.backgroundSize = `${value}% 100%`;
+		}
+	}, [value]);
 
 	return (
 		<>
 			<h3 className="text-white text-lg mt-5">{label}</h3>
 			<input
+				ref={inputRef}
 				type="range"
 				min={0}
 				max={100}
 				step=".01"
 				value={value}
-				style={backgroundPercentage()}
+				style={{ backgroundSize: `${value}% 100%` }}
 				onChange={onChange}
 			/>
 		</>
