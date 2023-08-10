@@ -31,8 +31,12 @@ export default function Button({
 			</Link>
 		);
 	} else {
-		if (label === "Login" || label === "Logout") {
-			onClick = label == "Login" ? signIn : signOut;
+		if (
+			label === "Login" ||
+			label === "Logout" ||
+			label === "Sign up and improve for free!"
+		) {
+			onClick = label == "Logout" ? signOut : signIn;
 		}
 		return (
 			<button
