@@ -1,23 +1,48 @@
+import Button from "../components/button";
 import Image from "next/image";
-import Header from "@/components/header";
 
 export default function Home() {
-  return (
-    <main className="home-main h-screen">
-      <div className="w-full h-3/4 flex flex-col items-center">
-        <div className="h-1/4"></div>
-        <div className="h-3/4 w-5/6 sm:w-3/5 2xl:w-1/3 flex flex-col items-center text-center text-white">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl">
-            The <span className="text-primary">fastest</span> online metronome
-          </h1>
-          <p className="my-3 sm:my-10 text-md sm:text-2xl w-4/5 sm:w-full">
-            with the <span className="text-primary">precision</span> and{" "}
-            <span className="text-primary">accuracy</span> required by
-            professional musicians and all of the tools you need to improve your
-            craft!
-          </p>
-        </div>
-      </div>
-    </main>
-  );
+	return (
+		<main className="mt-20 text-white">
+			<div id="hero" className="md:mt-40 flex flex-col md:flex-row">
+				<div className="md:w-2/3 flex flex-col gap-12 p-10 pl-16">
+					<h1 className="text-3xl sm:text-5xl font-bold">
+						A <span className="text-primary">simple</span> and{" "}
+						<span className="text-primary">effective</span> tool to
+						help you improve your{" "}
+						<span className="text-accent">tempo control</span>!
+					</h1>
+					<p className="text-xl">
+						Customize our metronome using a wide range of settings,
+						create presets to match your warmup routine or song, and
+						test your progress with the tempo control game!
+					</p>
+					<Button
+						label="Sign up and improve for free!"
+						className="bg-accent"
+						hover
+					/>
+				</div>
+				<div className="md:w-1/2 flex gap-12 p-10 justify-center">
+					<div className="relative">
+						<Image
+							src="/metronomeBase.png"
+							alt="met"
+							width={300}
+							height={900}
+							className="h-full"
+						/>
+						<Image
+							id="beater"
+							className="absolute h-full -top-2 left-1/2 origin-bottom -translate-x-1/2"
+							src="/beater.png"
+							alt="metronome"
+							width={35}
+							height={750}
+						/>
+					</div>
+				</div>
+			</div>
+		</main>
+	);
 }
