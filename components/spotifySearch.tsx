@@ -29,7 +29,7 @@ export default function SpotifySearch({
 		setFetchingToken(false);
 	}
 
-	async function search(token: string, query: string) {
+	async function search(query: string) {
 		if (!query.trim()) {
 			setSearchResults([]);
 			return;
@@ -58,7 +58,7 @@ export default function SpotifySearch({
 		if (debounceRef.current) {
 			clearTimeout(debounceRef.current);
 		}
-		debounceRef.current = setTimeout(() => search(token, query), 300);
+		debounceRef.current = setTimeout(() => search(query), 300);
 	}
 
 	async function setTempoFromTrack(event: React.MouseEvent<HTMLDivElement>) {
